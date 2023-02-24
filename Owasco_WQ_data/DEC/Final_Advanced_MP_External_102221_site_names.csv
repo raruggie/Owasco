@@ -1,0 +1,32 @@
+Location ID,Group,Stream,WI/PWL ID,Waterbody  Classification,Description,Latitude,Longitude
+07-CATH-0.6,Seneca,Catherine Creek,0705-0011,C(TS),South genesee st bridge.,42.32875,-76.84401
+07-KASH-0.3,Seneca,Kashong Creek,0705-0017,C,At west lake rd.,42.76482,-76.97656
+07-KEUK-0.1,Seneca,Keuka Outlet,0705-0020,C(T),0.5 m u.s. Of mouth.,42.682,-76.949
+07-REED-0.1,Seneca,Reeder Creek,0705-0074,C(T),300' west of intersection with 125.,42.7862,-76.927
+07-GLNK-0.2,Seneca,Glen Creek,0705-0082,C(TS),Junction of mcgee and shannon street.,42.378,-76.862
+07-BGST-0.1,Seneca,Big Stream,0705-0087,C(TS),At south glenora rd.,42.49,-76.9143
+07-THOL-1.8,Seneca,Tug Hollow Creek,0705-0073,C,10 m above satterly hill rd. Bridge.,42.42696,-76.84438
+07-CTLE-0.1,Seneca,Castle Creek,0705-0027,C,50 m from trib mouth.,42.873,-76.973
+07-OWLI-3.0,Owasco,Owasco Lake Inlet,0706-0002,C(T),20 m below sr 38.,42.71667,-76.43773
+07-SCKR-0.1,Owasco,Sucker Brook,0706-0010,C,100 m upstream of sr 38a.,42.902,-76.527
+07-OWAL_T2-0.1,Owasco,,0706-0010,C,,42.892,-76.522
+07-VENE-1.5,Owasco,Veness Brook,0706-0010,C,Downstream of silver street rd. Bridge.,42.88016,-76.56232
+07-VENE-0.4,Owasco,Veness Brook,0706-0010,C,Veness brook at oltz residence,42.886,-76.548
+07-DUCH-0.3,Owasco,Dutch Hollow Brook,0706-0003,C(TS),East lake rd.,42.864,-76.508
+07-DUCH-8.3,Owasco,Dutch Hollow Brook,0706-0003,C(TS),10 m above old state rd. Bridge.,42.83167,-76.41277
+07-OWAL_T5-0.2,Owasco,,0706-0010,C,,42.843,-76.503
+07-OWAL_T46-0.1,Owasco,Unnamed TributaryTo Owasco Lake,0706-0010,C,Off fire lane near sr 38.,42.824,-76.521
+07-OWAL_T9-0.1,Owasco,Unnamed TributaryTo Owasco Lake,0706-0010,C,Off widewaters rd.,42.805,-76.491
+07-OWAL_T9-0.1,Owasco,,0706-0010,C,,42.805,-76.491
+07-OWAL_T16-0.4,Owasco,,0706-0010,C,,42.776,-76.462
+07-OWLI-0.1,Owasco,,0706-0002,C(T),,42.755,-76.463
+07-SKAT_T93a-0.5,Skaneateles,Unnamed Tributary To Skaneateles Lake,0707-0005,AA,Just upstream of culvert on west lake rd.,42.93523,-76.43204
+07-SKAT_T2-0.1,Skaneateles,Unnamed Tributary To Skaneateles Lake,0707-0005,AA,East lake rd. At public fishing access.,42.92439,-76.40494
+07-SKAT_T5-0.1,Skaneateles,Unnamed Tributary To Skaneateles Lake,0707-0005,AA,East lake rd. Bridge.,42.904,-76.39399
+07-SKAT_T89-0.2,Skaneateles,Unnamed Tributary To Skaneateles Lake,0707-0005,AA,West lake rd. Bridge.,42.898,-76.419
+07-SKAT_T14-0.2,Skaneateles,Unnamed Tributary To Skaneateles Lake,0707-0005,AA,At route 41 bridge.,42.878,-76.37499
+07-BSWP-0.1,Skaneateles,Bear Swamp Creek,0707-0005,AA(T),Appletree fire lane.,42.82246,-76.32969
+07-SKAT_T21-0.1,Skaneateles,,0707-0005,AA,,42.81,-76.312
+07-RAND-0.1,Skaneateles,,0707-0005,AA,,42.786,-76.274
+07-BSWP-6.3,Skaneateles,,0707-0005,AA,,42.751,-76.304
+07-GROU-1.5,Skaneateles,Grout Brook,0706-0001,AA(T),Co rte 101 at sweeney hill rd. Bridge.,42.74194,-76.26528

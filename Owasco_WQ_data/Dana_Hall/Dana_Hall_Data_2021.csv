@@ -1,0 +1,42 @@
+UFI Lab ID,Client ID,Field ,System Name,Station ,Sampling ,Sampling ,Receive,Receive,Comments,TP,flags,TDP ,flags,SRP,flags,Analysis,Nox,flags,TN,flags,TSS,flags
+,,Duplicate,,Name,Date,Time,Date,Time,Log In,(µgP/L),(TDP), (µgP/L),(TP), (µgP/L),(SRP),Date, (µgN/L),(NOx), (µgN/L),(TN),mgDW/L,(TSS)
+210922004-001,OWLA 166,A,Owasco Tributaries,Dutch Hollow Brook,9/22/2021,9:50,9/22/2021,16:00,,8.4,,10,,<lod,F22,9/23/2021,952.2,,998,,<lod,F22
+210922004-002,OWLA 101,,Owasco Tributaries,Sucker Brook,9/22/2021,9:30,9/22/2021,16:00,,33.5,,25.3,,14.2,,9/23/2021,382.6,,815,,<lod,F22
+210922004-003,OWLA 158,,Owasco Tributaries,Owasco Inlet/Walpole Rd.,9/22/2021,12:05,9/22/2021,16:00,,41.7,,35.1,,29.4,,9/23/2021,910.4,,1039,,1,F16
+210922004-004,OWLA 274,,Owasco Tributaries,Veness Brook,9/22/2021,13:00,9/22/2021,16:00,,58.9,,12.2,,15.1,,9/23/2021,1034,,1350,,50.4,
+210922004-005,OWLA 200,,Owasco Tributaries,Owasco inlet/St. Rt. 90,9/22/2021,11:30,9/22/2021,16:00,,11.4,,5.2,,2.3,,9/23/2021,3309,,3242,F2,6.2,
+210922004-006,OWLA 213,,Owasco Tributaries,Owasco Inlet/W. Cayuga St.,9/22/2021,10:50,9/22/2021,16:00,,8,,6.5,,<lod,F22,9/23/2021,1275,,1284,,1,F16
+210922004-007,OWLA 166,B,Owasco Tributaries,Field Dup,9/22/2021,9:30,9/22/2021,16:00,SRP/TDP filtered from TP,8.7,,5.9,F5,0.8,"F16,F5",9/23/2021,NS,,NS,,NS,
+210922004-008,Field Blank,,Owasco Tributaries,Field Blank,9/22/2021,9:50,9/22/2021,16:00,SRP/TDP filtered from TP,1.6,F16,<lod,"F22,F5",<lod,"F22,F5",9/23/2021,NS,,NS,,NS,
+210924001-001,OWLA 166,,Owasco Tributaries,Dutch Hollow Brook,9/24/2021,9:50,9/24/2021,14:10,,56.9,,47,,28.5,,9/24/2021,1612,,1847,,20,
+210924001-002,OWLA 101,A,Owasco Tributaries,Sucker Brook,9/24/2021,9:20,9/24/2021,14:10,,120.5,F2,68.2,,52.5,,9/24/2021,394.4,,1009,,17.7,
+210924001-003,OWLA 158,,Owasco Tributaries,Owasco Inlet/Walpole Rd.,9/24/2021,11:20,9/24/2021,14:10,,48.5,,29.2,,17.2,,9/24/2021,647.7,,950,,11.6,
+210924001-004,OWLA 274,,Owasco Tributaries,Veness Brook,9/24/2021,12:00,9/24/2021,14:10,,93.6,,68.7,,47.4,,9/24/2021,2680,F2 ,3090,F2,18,
+210924001-005,OWLA 200,,Owasco Tributaries,Owasco inlet/St. Rt. 90,9/24/2021,10:50,9/24/2021,14:10,,68.3,,41.1,,23.7,,9/24/2021,643.7,,942,,36.6,
+210924001-006,OWLA 213,,Owasco Tributaries,Owasco Inlet/W. Cayuga St.,9/24/2021,10:30,9/24/2021,14:10,,57.1,,22.3,,15.4,,9/24/2021,931.6,,1152,,23.8,
+210924001-007,OWLA 101,B,Owasco Tributaries,Field Dup,9/24/2021,9:10,9/24/2021,14:10,,125.3,F2,66.3,F26,49,,9/24/2021,397.9,,989,,15.8,
+210924001-008,Field Blank,,Owasco Tributaries,Field Blank,9/24/2021,9:15,9/24/2021,14:10,,3,F16,<lod,F22,<lod,F22,9/24/2021,<lod,F22,<lod,F22,<lod,F22
+211015001-001,OWLA 166,,Owasco Tributaries,Dutch Hollow Brook,10/14/2021,10:30,10/15/2021,9:37,,13.4,,6.9,,2.1,,10/14/2021,1304,,1415,,<lod,F22
+211015001-002,OWLA 101,A,Owasco Tributaries,Sucker Brook,10/14/2021,9:25,10/15/2021,9:37,,32.7,,23.7,,15.6,,10/14/2021,363.2,,875,,<lod,F22
+211015001-003,OWLA 158,,Owasco Tributaries,Owasco Inlet/Walpole Rd.,10/14/2021,12:41,10/15/2021,9:37,,17.5,,12.6,,9,,10/14/2021,943.4,,1107,,1,F16
+211015001-004,OWLA 274,,Owasco Tributaries,Veness Brook,10/14/2021,13:40,10/15/2021,9:37,,19.9,,13.5,,5.5,,10/14/2021,1656,,1963,,2.5,F16
+211015001-005,OWLA 200,,Owasco Tributaries,Owasco inlet/St. Rt. 90,10/14/2021,11:35,10/15/2021,9:37,,13.8,,9.6,,4.2,,10/14/2021,963.9,,1114,,2.5,F16
+211015001-006,OWLA 213,,Owasco Tributaries,Owasco Inlet/W. Cayuga St.,10/14/2021,11:00,10/15/2021,9:37,,11.2,,9.9,,4.7,,10/14/2021,1266,,1392,,<lod,F22
+211015001-007,OWLA 101,B,Owasco Tributaries,Field Dup,10/14/2021,9:25,10/15/2021,9:37,,32.9,,24.2,,16,,10/14/2021,373.2,,861,,1.4,F16
+211015001-008,Field Blank,,Owasco Tributaries,Field Blank,10/14/2021,9:25,10/15/2021,9:37,,3.2,F16,2.9,F16,2.2,,10/14/2021,<lod,F22,<lod,F22,<lod,F22
+211019001-001,OWLA 166,,Owasco Tributaries,Dutch Hollow Brook,10/18/2021,14:54,10/19/2021,9:24,,234.1,F2,69.4,,55.4,,10/19/2021,1916.7,,2160,,98,
+211019001-002,OWLA 101,,Owasco Tributaries,Sucker Brook,10/18/2021,15:28,10/19/2021,9:24,,222.3,"F2,F26",144.8,F2,96,,10/19/2021,558.4,,1314,,28.9,
+211019001-003,OWLA 158,A,Owasco Tributaries,Owasco Inlet/Walpole Rd.,10/18/2021,14:05,10/19/2021,9:24,,57.8,,34.8,,20.7,,10/19/2021,594.9,,1009,,14.6,
+211019001-004,OWLA 274,,Owasco Tributaries,Veness Brook,10/18/2021,15:55,10/19/2021,9:24,SRP filtered in house,271,F2,47.6,,30.7,,10/19/2021,1177.9,,1718,,67,
+211019001-005,OWLA 200,,Owasco Tributaries,Owasco inlet/St. Rt. 90,10/18/2021,13:36,10/19/2021,9:24,,50,,21.1,,14.2,,10/19/2021,1166.4,,1470,,23.2,
+211019001-006,OWLA 213,,Owasco Tributaries,Owasco Inlet/W. Cayuga St.,10/18/2021,13:15,10/19/2021,9:24,,50.7,,19.4,,14.6,,10/19/2021,1292.7,,1418,,19.6,
+211019001-007,OWLA 158,B,Owasco Tributaries,Field Dup,10/18/2021,14:15,10/19/2021,9:24,,51.9,,32.3,,20.5,,10/19/2021,580,,996,,12.2,
+211019001-008,Field Blank,,Owasco Tributaries,Field Blank,10/18/2021,13:10,10/19/2021,9:24,,,F19,2.2,F16,0.9,F16 ,10/19/2021,29.3,F16,<lod,F22,<lod,F22
+211111001-001,OWLA 166,,Owasco Tributaries,Dutch Hollow Brook,11/10/2021,12:20,11/11/2021,9:00,,16.7,,8.2,,5.4,,11/11/2021,2035,F2,1974,,1,F16
+211111001-002,OWLA 101,A,Owasco Tributaries,Sucker Brook,11/10/2021,9:22,11/11/2021,9:00,,33.7,,17.6,,11.1,,11/11/2021,470.2,,841.1,,1.8,F16
+211111001-003,OWLA 158,,Owasco Tributaries,Owasco Inlet/Walpole Rd.,11/10/2021,11:25,11/11/2021,9:00,,33.9,,27,,22.1,,11/11/2021,1604,F2,1751,,<LOD,F22
+211111001-004,OWLA 274,,Owasco Tributaries,Veness Brook,11/10/2021,10:00,11/11/2021,9:00,,26.1,,12.7,,6.5,,11/11/2021,1274,F2,1508,,3.6,
+211111001-005,OWLA 200,,Owasco Tributaries,Owasco inlet/St. Rt. 90,11/10/2021,11:00,11/11/2021,9:00,,23.6,,11,,8.3,,11/11/2021,1725,F2,2075,,9.9,
+211111001-006,OWLA 213,,Owasco Tributaries,Owasco Inlet/W. Cayuga St.,11/10/2021,10:35,11/11/2021,9:00,,16.8,,8.2,,6.5,,11/11/2021,1966,F2,2027,,6,
+211111001-007,OWLA 101,B,Owasco Tributaries,Field Dup,11/10/2021,9:51,11/11/2021,9:00,,27.2,,18.1,,11.3,,11/11/2021,464.9,,841.9,,2,F16
+211111001-008,Field Blank,,Owasco Tributaries,Field Blank,11/10/2021,,11/11/2021,9:00,,<LOD,F22,2.6,F16,<LOD,F22,11/11/2021,<LOD,F22,<LOD,F22,<LOD,F22

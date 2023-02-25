@@ -31,7 +31,7 @@ library(lfstat)
 
 # set wd to DEC data location
 
-setwd("C:/PhD/Owasco/Owasco_WQ_data/DEC")
+setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/DEC")
 
 # read in site names data
 
@@ -49,7 +49,6 @@ site_names%>%
   mapview(., zcol = 'Location.ID', na.color = NA)
 
 # 07-OWLI-3.0 matches up with USGS gauge
-
 
 # read in raw data
 
@@ -106,7 +105,7 @@ Ow_reduced$CHS_EVENT_SMAS_SAMPLE_DATE<-as.Date(Ow_reduced$CHS_EVENT_SMAS_SAMPLE_
 
 # set wd
 
-setwd("C:/PhD/Owasco/Owasco_WQ_data/Dana_Hall")
+setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall")
 
 # actual data
 # need to adjust column names because there were two  rows for column headers in UFI data files
@@ -171,7 +170,7 @@ all_sites%>%
   st_as_sf(.,coords=c('Longitude','Latitude'), crs = 4326)%>%
   mapview(., zcol = 'DataBase', na.color = NA)
 
-####################### Exporting the WQ Data #######################
+####################### Exporting the WQ Data: Sucker Brook, TP #######################
 
 # First paired DEC and Dana Hall site is 07-SCKR-0.1 and OWLA-101
 # going to call this single WQ site Sucker Brook or SB
@@ -189,39 +188,29 @@ SB_TP<-bind_rows(DEC,DHD)
 
 # write out to csv
 
-setwd("C:/PhD/Owasco/Owasco_WQ_data/Dana_Hall")
-write.csv(SB_TP, "SB_TP.csv", row.names = F)
+# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall")
+# write.csv(SB_TP, "SB_TP.csv", row.names = F)
 
+####################### Exporting the WQ Data: Dutch Hollow, TP #######################
 
+# Second paired DEC and Dana Hall site is 07-DUCH-0.3 and OWLA-166
+# going to call this single WQ site Dutch Hollow or DH
+# and first going to start with TP
+# NEED TO CONVERT DANA HALL DATA FROM ug/L TO mg/L!!!!!!!
+# EGRET Sample dataframe format for external WQ data: Date, Remarks, value
 
+DEC<-Ow_reduced%>%filter(Location.ID == '07-DUCH-0.3' & CHEM_PARAMETER_NAME == "PHOSPHORUS, TOTAL (AS P)")%>%mutate(Remarks = NA, Date = CHS_EVENT_SMAS_SAMPLE_DATE, Value = CHR_RESULT_VALUE)%>%select(c(9,8,10))
 
+DHD<-DHD_all[,c(1:4)]%>%filter(Client.ID_ == "OWLA 166")%>%filter(Station_Name != 'Long Point')%>%mutate(Value = as.numeric(`TP_(µgP/L)`)*0.001, Remarks = NA, Date = as.Date(Sampling_Date, format = '%m/%d/%Y'))%>%select(c(7,6,5))
 
+# bind them together
 
+DH_TP<-bind_rows(DEC,DHD)
 
+# write out to csv
 
-
-
-
-# format dataframe for EGRET, split up by consitutent
-
-Consit_list<-Owasco_WQ%>%
-  select(CHEM_PARAMETER_NAME, CHS_EVENT_SMAS_SAMPLE_DATE, CHR_RESULT_VALUE)%>%
-  mutate(Remarks = NA, .after = CHS_EVENT_SMAS_SAMPLE_DATE)%>%
-  split(., f = .$CHEM_PARAMETER_NAME)%>%
-  lapply(., function(x) { x["CHEM_PARAMETER_NAME"] <- NULL; x })
-
-# write out to individual csv files
-
-setwd("C:/PhD/Owasco/Owasco_inlet_WQ_data/DEC/07-OWLI-0.1")
-sapply(names(Consit_list),function (x) write.csv(Consit_list[[x]], file=paste(x, "csv", sep="."), row.names = FALSE))
-
-
-
-# break up data in list of dataframes based on unique sites
-
-
-Sites_list<- split(Ow_reduced, f = Ow$Location.ID)
-
+# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall")
+# write.csv(DH_TP, "DH_TP.csv", row.names = F)
 
 
 

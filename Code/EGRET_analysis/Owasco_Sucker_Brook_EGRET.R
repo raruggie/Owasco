@@ -10,6 +10,7 @@ gc()
 # DEC WQ data site # for sucker brook: 07-SCKR-0.1
 # Dana Hall WQ data site number for sucker brook: OWLA-101
 # WQ data was combined into EGRET ready dataframe in another code and output saved to csv (for EGRET requirments)
+# Note that INFO uses interactive session
 
 ####################### Load packages #######################
 
@@ -65,11 +66,11 @@ Daily <- readNWISDaily(siteNumber, QParameterCd, StartDate, EndDate)
 
 # import just one consituent for now at Sample dataframe
 
-Sample<-readUserSample("C:/PhD/Owasco/Owasco_WQ_data/Dana_Hall", "SB_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
+Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall", "SB_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
 
 ####################### Import metadata #######################
 
-INFO <- readNWISInfo(siteNumber="04235299",parameterCd = "", interactive = FALSE)
+INFO <- readNWISInfo(siteNumber="04235299",parameterCd = "", interactive = T)
 
 ####################### Map flow and WQ sites #######################
 
@@ -79,19 +80,23 @@ map_Q<-c('USGS_gauge_04235299', INFO$dec_lat_va[1], INFO$dec_long_va[1])
 
 # WQ lat long is in DEC report table, which I copied to a CSV
 
-map_WQ<-read.csv("C:/PhD/Owasco/Owasco_WQ_data/DEC/Final_Advanced_MP_External_102221_site_names.csv")%>%filter(Location.ID == '07-SCKR-0.1')
+map_WQ<-read.csv("C:/PhD/Owasco/Owasco/Owasco_WQ_data/DEC/Final_Advanced_MP_External_102221_site_names.csv")%>%filter(Location.ID == '07-SCKR-0.1')
 map_WQ<-map_WQ[,c(1,7,8)]
+
+# load watershed shapefiles
+
+setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Shapefiles/")
+USGS_DA<-st_read("USGS_gauge_04235299_DA_shapefile_SS/globalwatershed.shp")
+USGS_DA$Name[1]<-'USGS_04235299'
+WQ_DA<-st_read("OWLA-101_DA_shapefile_SS/globalwatershed.shp")
+WQ_DA$Name[1]<-'OWLA-101'
 
 # combine dataframes and plot
 
 rbind(map_WQ, map_Q)%>%
   as.data.frame(row.names = 1:nrow(.))%>%
   st_as_sf(.,coords=c('Longitude','Latitude'), crs = 4326)%>%
-  mapview(., zcol = 'Location.ID', na.color = NA)
-
-####################### Moving Discharge Data from the Daily Data Frame to the Sample #######################
-
-# eList <- mergeReport(INFO,Daily,Sample) # not sure why we use this still
+  mapview(., zcol = 'Location.ID', na.color = NA)+mapview(USGS_DA)+mapview(WQ_DA)
 
 ####################### Scale flow to WQ site #######################
 
@@ -105,11 +110,22 @@ Q_sf<-9.85/INFO$drain_area_va[1]
 
 Daily_scaled<-Daily%>%mutate(Q=Q*Q_sf, LogQ = log(Q*Q_sf), Q7 = Q7*Q_sf, Q30 = Q30*Q_sf)
 
+# change INFO
+
+INFO$station_nm<-"Sucker Brook (Flow Scaled)"
+INFO$shortName<-"Sucker Brook (Flow Scaled)"
+
+####################### Moving Discharge Data from the Daily Data Frame to the Sample #######################
+
+eList <- mergeReport(INFO,Daily_scaled,Sample) # not sure why we use this still
+
 ####################### Flow History Analysis #######################
 
 # create elist object
 
-eList<-as.egret(INFO,Daily_scaled,Sample)
+# eList<-as.egret(INFO,Daily_scaled,Sample)
+
+# using as.egret does not add Q to the sample dataframe which is messing with the plotting funcitons in the next section. Thus, sticking with mergeReport elist for now
 
 # set the PA
 
@@ -144,11 +160,11 @@ plotSDLogQ(eList, window = 5) # need to use window argument because POR is too s
 # plot only those periods in which discharge is higher than some threshold value.
 
 plotQTimeDaily(eList, lwd = 1, qUnit = 1)
-plotQTimeDaily(eList, qLower = 1000, lwd = 1)
+plotQTimeDaily(eList, qLower = 100, lwd = 1)
 
 # Creating Multipanel Graphics for Flow History
 
-plotFour(eList, qUnit = 2, window = 21) # doesn;t plot the last pane because of issue demonstrated above with plotSDLogQ
+plotFour(eList, qUnit = 2, window = 5)
 
 plot15(eList, yearStart=2010,yearEnd=2022)
 
@@ -168,15 +184,39 @@ plot15(eList, yearStart=2010,yearEnd=2022)
 # confirmation of the WRTDS inferences and suggest further analysis that 
 # should be considered.
 
+# produces a time series graph of the constituent concentration values as a function of time
 
+graphics.off()
 
+plotConcTime(eList)
 
+# for somereason this is not working. It works if eList is created using merge report
 
+# range of discharge variables that are common and those that are extreme, for the record as a whole or for a particular part of the year.
 
+flowDuration(eList, qUnit = 1)
 
+# relation between discharge and concentration
 
+plotConcQ(eList, logScale=TRUE)
 
+# relation between discharge and flux
 
+plotFluxQ(eList, fluxUnit=4)
+
+# multi-plot function: plotConcQ, plotConcTime, boxConcMonth, and boxQTwice
+
+multiPlotDataOverview(eList)
+
+####################### Summarizing Water-Quality Data with Using WRTDS #######################
+
+# The method requires the availability of measured concentrations of the constituent of interest and a complete record of
+# daily mean discharge for some period of record. The method was designed for data sets with 200 or more measured concentration
+# values that span a period of a decade or more.
+# 
+# However, testing has shown that in some cases, it can produce reliable
+# estimates of mean concentrations or mean fluxes with data sets as small as about 60 samples spanning periods as short as a
+# decade, but doing so requires special settings on some of the arguments of the modelEstimation function (described below).
 
 
 

@@ -188,7 +188,7 @@ SB_TP<-bind_rows(DEC,DHD)
 
 # write out to csv
 
-# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall")
+# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs")
 # write.csv(SB_TP, "SB_TP.csv", row.names = F)
 
 ####################### Exporting the WQ Data: Dutch Hollow, TP #######################
@@ -209,8 +209,8 @@ DH_TP<-bind_rows(DEC,DHD)
 
 # write out to csv
 
-# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall")
-# write.csv(DH_TP, "DH_TP.csv", row.names = F)
+setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs")
+write.csv(DH_TP, "DH_TP.csv", row.names = F)
 
 
 

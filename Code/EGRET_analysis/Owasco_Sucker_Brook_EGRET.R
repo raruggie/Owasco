@@ -70,7 +70,9 @@ Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall", "SB_TP.c
 
 ####################### Import metadata #######################
 
-INFO <- readNWISInfo(siteNumber="04235299",parameterCd = "", interactive = T)
+INFO <- readNWISInfo(siteNumber="04235299",parameterCd = "", interactive = F)
+INFO$param.units = 'mg/L'
+INFO$paramShortName = 'TP'
 
 ####################### Map flow and WQ sites #######################
 
@@ -114,6 +116,7 @@ Daily_scaled<-Daily%>%mutate(Q=Q*Q_sf, LogQ = log(Q*Q_sf), Q7 = Q7*Q_sf, Q30 = Q
 
 INFO$station_nm<-"Sucker Brook (Flow Scaled)"
 INFO$shortName<-"Sucker Brook (Flow Scaled)"
+INFO$drain_area_va[1]<-9.85
 
 ####################### Moving Discharge Data from the Daily Data Frame to the Sample #######################
 
@@ -217,6 +220,106 @@ multiPlotDataOverview(eList)
 # However, testing has shown that in some cases, it can produce reliable
 # estimates of mean concentrations or mean fluxes with data sets as small as about 60 samples spanning periods as short as a
 # decade, but doing so requires special settings on some of the arguments of the modelEstimation function (described below).
+
+# The method can be used for a variety of purposes including:
+# 1. estimating long-term changes (trends) in average concentrations and average fluxes, both annually and for some selected PA;
+# 2. estimating actual mean concentration or fluxes for specific years or specific PAs within the year;
+# 3. estimating mean concentrations or mean fluxes over some specified period, such as a decade; and
+# 4. for providing insights into the change in system behavior that may lead to a better understanding of the causative mechanism behind the trends that are observed.
+
+# The WRTDS method creates a highly flexible statistical representation of the expected value of concentration for every day
+# in the period of record and then uses that representation to produce four daily time series for the period of record. These are daily
+# concentration, daily flux, flow-normalized daily concentration, and flow-normalized daily flux.
+
+# For example, if we compare a sample value with q and T values of 3.0
+# and 1995.0, respectively, to a grid point with q value of 3.8 and a T
+# value of 1997.25, then the distance in log discharge would be 0.8, the
+# distance in time would be 2.25 years, and the distance in season would
+# be 0.25 years
+
+# The half window widths (the h value in the formula for the weights) have 
+# default values of 2 (in log discharge units), 7 years, and 0.5 years
+
+# flow normalization: assumed flow pdf is stationary across all years.
+
+# Running WRTDS: default values 
+
+eList_WRTDS <- modelEstimation(eList)
+
+# does not run because default for minimum number of uncensored observations is 50
+
+eList_WRTDS <- modelEstimation(eList, minNumUncen = 30, minNumObs = 30)
+
+# When the concentration record has a large data gap, the WRTDS estimates for the time of the data gap are likely to be highly unreliable. Because
+# WRTDS makes no prior assumptions about the shape of the time trend, the computations can create large oscillations during long data gaps. These 
+# are just numerical artifacts. A data gap of two years or less (regardless of the overall record length) is generally not a problem, but as gaps
+# become longer, it may be prudent to use the blankTime function to eliminate the results for the gap period. The blankTime function should
+# also be used if there is a period of a few years during which the sampling frequency is very low; for example, fewer than six observations per year. 
+# If there is a long data gap or period of very sparse data, the modelEstimation step should be run as usual, followed by running of the 
+# blankTime function. The blankTime function replaces all of the estimated values (yHat, SE, ConcDay, FluxDay, FNConc, FNFlux) in the Daily data 
+# frame during the blank period with NA, the indicator for missing values. The user must specify the starting and ending dates of the gap. It may 
+# be prudent to make the blank period a few months longer than the actual gap and to start and end it with the starting and ending dates of water
+# years, if water years will be the basis for annual summary computations. Regardless of how the user sets the blank period, any water-quality data 
+# that may exist during that period will be used in the estimation process to inform the model, but the model is not used to produce daily estimates 
+# during this blank period because they are likely to be highly unreliable. The discharge data during this period are still used, along with the rest 
+# of the discharge data, for making flow-normalized estimates. It is also possible to use blankTime more than once on a given data set if it contains
+# multiple data gaps.
+
+# given the gap between 2018 and 2021, I will use blanktime
+# note this removes entires from the dataframes reuslting from setupYears and calculateMonthlyResults function
+
+eList_WRTDS <- blankTime(eList_WRTDS, startBlank = '2019-01-01', endBlank = '2021-09-01')
+# eList <- blankTime(eList, startBlank = Daily$Date[1], endBlank = Sample$Date[1]-1)
+
+# computing annual results using setupYears function
+
+AR<-setupYears(eList_WRTDS$Daily, paLong = 12, paStart = 10)
+
+# computing monthly results using calculateMonthlyResults function
+
+MR<-calculateMonthlyResults(eList_WRTDS)
+
+# Plotting Annual Results: plot the annual average concentration and 
+# annual flow-normalized concentration. The annual average concentration 
+# is displayed as individual points (plotted at the midpoint of the PA).
+# The flow-normalized results are presented as a smooth curve (in green)
+# even though they are computed for a single point in time for each year
+
+# to consider the months of April, May, and June, the command would be:
+# eList <- setPA(eList, paStart = 4, paLong = 3)
+
+plotConcHist(eList_WRTDS, yearStart = 2017, yearEnd = 2022, concMax = NA)
+
+plotFluxHist(eList_WRTDS, yearStart = 2017, yearEnd = 2022)
+
+# printed table of some or all of the results at an annual time step.
+
+resultsTable <- tableResults(eList_WRTDS)
+
+# Computing and Displaying Tables of Change Over Time
+# provides measures of change, in both flow-normalized concentrations and flow-normalized flux, between pairs of years selected by the user
+
+yearPoints <- c(2017,2021)
+tableChange(eList_WRTDS, fluxUnit=6, yearPoints)
+
+# no result
+
+# In addition to comparing rates of change over various time periods, another comparison particularly worthy of note is of changes 
+# in flow-normalized concentration, in percent, to changes in flow-normalized flux, in percent, for the same time period. If the 
+# nature of the change in the system were such that the trend in the log of concentration was the same across the full range of 
+# discharges and the full range of seasons, then it is mathematically assured that the changes, in percent, for flow-normalized 
+# concentration and flow-normalized flux would be equal to each other.
+
+# no code given to address this proposition. 
+
+# To facilitate rapid exploration of serious problems with WRTDS models, the EGRET software has a single function that produces a 
+# set of eight diagnostic graphics on a single page. This function is fluxBiasMulti and it is described in more detail below. The 
+# graphic it produces is designed to help the hydrologist quickly spot potential problems.
+
+
+
+
+
 
 
 

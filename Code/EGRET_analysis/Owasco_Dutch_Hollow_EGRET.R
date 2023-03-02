@@ -23,11 +23,6 @@ library(fuzzyjoin)
 library(maps)
 library(lfstat)
 
-####################### Functions #######################
-
-# setwd("C:/PhD/Research")
-# source('Ryan_Functions.R')
-
 ####################### A summary of EGRET #######################
 
 # The focus of EGRET can best be described under the general 
@@ -66,7 +61,7 @@ Daily <- readNWISDaily(siteNumber, QParameterCd, StartDate, EndDate)
 
 # import just one consituent for now at Sample dataframe
 
-Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs", "DH_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
+Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes", "DH_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
 
 ####################### Import metadata #######################
 

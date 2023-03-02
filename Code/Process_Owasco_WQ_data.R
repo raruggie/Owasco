@@ -21,11 +21,7 @@ library(mapview)
 library(fuzzyjoin)
 library(maps)
 library(lfstat)
-
-####################### Functions #######################
-
-# setwd("C:/PhD/Research")
-# source('Ryan_Functions.R')
+library(reshape2)
 
 ####################### DEC data #######################
 
@@ -151,6 +147,20 @@ DHD_sites<-read.csv('Site_names_and_coords_2022.csv')
 
 DHD_sites<-DHD_sites[,-c(2,5,9)]%>%drop_na(Lat)
 
+# dana hall also has 2018 data
+
+DHD_2018<-read.csv("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall/Dana_Hall_Data_2018.csv")
+
+####################### DOW Data #######################
+
+# Owasco sites were queried based on lat long intersection with Owasco Lake DA shapefile
+
+OW_DOW<-read.csv("C:/PhD/Owasco/Owasco/Owasco_WQ_data/DOW/DOW_Owasco_P_data.csv")
+
+# format dates
+
+OW_DOW<-OW_DOW%>%mutate(sample_date = as.Date(as.POSIXlt(sample_date, format="%m/%d/%Y, %I:%M %p", tz = 'UTC')))
+
 ####################### Plot DEC and Dana Hall Data #######################
 
 # plot Dana hall data and DEC data to see which sites have the most data
@@ -170,6 +180,77 @@ all_sites%>%
   st_as_sf(.,coords=c('Longitude','Latitude'), crs = 4326)%>%
   mapview(., zcol = 'DataBase', na.color = NA)
 
+####################### Adding to Sucker Brook, TP #######################
+
+################### Dana Hall, 2015 #######################
+
+sb1<-read.csv('C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall/Sucker_Brook_2015.csv')
+
+# pivot the data longer by 'hand' 
+
+consit<-as.character(sb1[1,])
+date<-as.Date(as.character(sb1[2,]), format = '%m/%d/%Y')
+value<-as.numeric(as.character(sb1[3,]))
+
+sb1<-data.frame(Date = date, Consit = consit, Value = value)
+  
+# filter for TP and format for EGRET (and when rbinding below)
+
+sb1<-sb1%>%filter(Consit == 'TP')%>%mutate(Remarks = NA, Value = Value/1000)%>%select(1,4,3)
+
+################### Dana Hall, 2013 and 2014 #######################
+
+sb2<-read.csv("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall/Sucker_Brook_2013-2014.csv")
+
+# pivot the data longer by 'hand' 
+
+date<-as.Date(as.character(sb2[1,]), format = '%m/%d/%Y')
+value<-as.numeric(as.character(sb2[2,]))
+
+sb2<-data.frame(Date = date, Value = value)
+
+# filter for TP and format for EGRET (and when rbinding below)
+
+sb2<-sb2%>%mutate(Remarks = NA, .after = 1)
+
+
+####################### Adding to Dutch Hollow, TP #######################
+
+################### DOW, all #######################
+
+dh1<-OW_DOW%>%filter(waterbody_name == 'Dutch Hollow Brook')%>%select(3,5)%>%mutate(Remarks = NA, .after = 1)%>%rename(Date = sample_date, Value = result_value)
+
+################### Dana Hall, 2018 #######################
+
+# need to convert from ug to mg
+
+dh2<-DHD_2018%>%filter(Station_Name == 'Dutch Hollow')%>%select(3,8)%>%mutate(Date = as.Date(Date, format = '%m/%d/%Y'))%>%mutate(Remarks = NA, .after = 1)%>%rename(Value = TP)%>%mutate(Value = Value/1000)
+
+################### Dana Hall, 2012 #######################
+
+# # this is the same as the DOW
+# # I realized this after doign DHD and then doing DOW
+# # leaving the code here
+# 
+# dh1<-read.csv('C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall/Dutch_Hollow_nutrient_2012.csv')
+# 
+# # make sure this site is the same as OWLA 166
+# 
+# known<-all_sites[1,]
+# unknown<-data.frame(a = '?', b = 'dutch_hollow_test', c = 'look out', d = dh1$Latitude[1], e = dh1$Longitude[1])
+# names(unknown)<-names(known)
+# 
+# rbind(known, unknown)%>%
+#   as.data.frame(row.names = 1:nrow(.))%>%
+#   st_as_sf(.,coords=c('Longitude','Latitude'), crs = 4326)%>%
+#   mapview(., zcol = 'DataBase', na.color = NA)
+# 
+# # these are essentially the same site
+# 
+# # filter, pivot, and format for EGRET (and the rbind below)
+# 
+# dh1<-dh1%>%filter(Parameter == 'Phosphorus (total,mg/l)')%>%select(5,7)%>%rename(Date = SAMPLE_DATE, Value = Result.Value)%>%mutate(Remarks = NA, .after = 1)%>%mutate(Date = as.Date(Date, format = '%m/%d/%Y'))
+
 ####################### Exporting the WQ Data: Sucker Brook, TP #######################
 
 # First paired DEC and Dana Hall site is 07-SCKR-0.1 and OWLA-101
@@ -184,7 +265,7 @@ DHD<-DHD_all[,c(1:4)]%>%filter(Client.ID_ == "OWLA 101")%>%filter(Station_Name !
 
 # bind them together
 
-SB_TP<-bind_rows(DEC,DHD)
+SB_TP<-bind_rows(sb2,sb1,DEC,DHD)
 
 # write out to csv
 
@@ -205,19 +286,12 @@ DHD<-DHD_all[,c(1:4)]%>%filter(Client.ID_ == "OWLA 166")%>%filter(Station_Name !
 
 # bind them together
 
-DH_TP<-bind_rows(DEC,DHD)
+DH_TP<-bind_rows(dh1,dh2,DEC,DHD)%>%arrange(Date)%>%filter(!duplicated(Date))
 
 # write out to csv
 
-setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs")
+setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes")
 write.csv(DH_TP, "DH_TP.csv", row.names = F)
-
-
-
-
-
-
-
 
 
 

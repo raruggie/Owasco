@@ -1,0 +1,73 @@
+"site_id","waterbody_name","sample_date","parameter_name","result_value","municipality","description","latitude","longitude"
+"07-VENE-1.5","Veness Brook","7/16/2019, 3:10 PM","PHOSPHORUS, TOTAL (AS P)",0.0221,"Fleming","downstream of silver street rd. bridge.",42.880164,-76.56232
+"07-DUCH-0.3","Dutch Hollow Brook","7/16/2019, 1:00 PM","PHOSPHORUS, TOTAL (AS P)",0.0109,"Owasco","east lake rd.",42.864,-76.508
+"07-OWAL_T9-0.1","Unnamed TributaryTo Owasco Lake","7/16/2019, 12:00 PM","PHOSPHORUS, TOTAL (AS P)",0.0885,"Niles","off widewaters rd.",42.805,-76.491
+"07-OWLI-3.0","Owasco Lake Inlet","7/16/2019, 10:30 AM","PHOSPHORUS, TOTAL (AS P)",0.0147,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWAL_T46-0.1","Unnamed TributaryTo Owasco Lake","7/16/2019, 12:00 AM","PHOSPHORUS, TOTAL (AS P)",0.0115,"Scipio","off fire lane near sr 38.",42.824,-76.521
+"07-VENE-1.5","Veness Brook","6/19/2019, 12:00 PM","PHOSPHORUS, TOTAL (AS P)",0.0199,"Fleming","downstream of silver street rd. bridge.",42.880164,-76.56232
+"07-OWAL_T46-0.1","Unnamed TributaryTo Owasco Lake","6/19/2019, 10:45 AM","PHOSPHORUS, TOTAL (AS P)",0.0107,"Scipio","off fire lane near sr 38.",42.824,-76.521
+"07-DUCH-0.3","Dutch Hollow Brook","6/19/2019, 8:45 AM","PHOSPHORUS, TOTAL (AS P)",0.0245,"Owasco","east lake rd.",42.864,-76.508
+"07-SCKR-0.1","Sucker Brook","6/19/2019, 8:00 AM","PHOSPHORUS, TOTAL (AS P)",0.0435,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-OWLI-3.0","Owasco Lake Inlet","6/18/2019, 3:15 PM","PHOSPHORUS, TOTAL (AS P)",0.0179,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-VENE-0.4","Veness Brook","6/19/2018, 8:40 AM","PHOSPHORUS, TOTAL (AS P)",0.122,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-SCKR-0.1","Sucker Brook","6/19/2018, 8:00 AM","PHOSPHORUS, TOTAL (AS P)",0.0498,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-DUCH-0.3","Dutch Hollow Brook","6/19/2018, 7:30 AM","PHOSPHORUS, TOTAL (AS P)",0.011,"Owasco","east lake rd.",42.864,-76.508
+"07-OWLI-3.0","Owasco Lake Inlet","6/19/2018, 6:45 AM","PHOSPHORUS, TOTAL (AS P)",0.022,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","5/29/2018, 12:30 PM","PHOSPHORUS, TOTAL (AS P)",NA,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-DUCH-0.3","Dutch Hollow Brook","5/29/2018, 11:20 AM","PHOSPHORUS, TOTAL (AS P)",0.0173,"Owasco","east lake rd.",42.864,-76.508
+"07-SCKR-0.1","Sucker Brook","5/29/2018, 10:30 AM","PHOSPHORUS, TOTAL (AS P)",0.0341,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-SCKR-0.1","Sucker Brook","5/29/2018, 10:30 AM","PHOSPHORUS, TOTAL (AS P)",0.0332,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-VENE-0.4","Veness Brook","5/23/2018, 8:10 AM","PHOSPHORUS, TOTAL (AS P)",0.0221,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-SCKR-0.1","Sucker Brook","5/23/2018, 7:40 AM","PHOSPHORUS, TOTAL (AS P)",0.0251,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-DUCH-0.3","Dutch Hollow Brook","5/23/2018, 7:00 AM","PHOSPHORUS, TOTAL (AS P)",0.0188,"Owasco","east lake rd.",42.864,-76.508
+"07-DUCH-0.3","Dutch Hollow Brook","5/23/2018, 7:00 AM","PHOSPHORUS, TOTAL (AS P)",0.0176,"Owasco","east lake rd.",42.864,-76.508
+"07-OWLI-3.0","Owasco Lake Inlet","5/23/2018, 6:24 AM","PHOSPHORUS, TOTAL (AS P)",0.111,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","5/15/2018, 2:40 PM","PHOSPHORUS, TOTAL (AS P)",0.0222,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-VENE-0.4","Veness Brook","5/15/2018, 12:40 PM","PHOSPHORUS, TOTAL (AS P)",0.0326,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-SCKR-0.1","Sucker Brook","5/15/2018, 11:50 AM","PHOSPHORUS, TOTAL (AS P)",0.0199,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-DUCH-0.3","Dutch Hollow Brook","5/15/2018, 10:45 AM","PHOSPHORUS, TOTAL (AS P)",0.0124,"Owasco","east lake rd.",42.864,-76.508
+"07-SCKR-0.1","Sucker Brook","5/1/2018, 12:30 PM","PHOSPHORUS, TOTAL (AS P)",0.0162,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-DUCH-0.3","Dutch Hollow Brook","5/1/2018, 11:50 AM","PHOSPHORUS, TOTAL (AS P)",0.0085,"Owasco","east lake rd.",42.864,-76.508
+"07-OWLI-3.0","Owasco Lake Inlet","5/1/2018, 10:35 AM","PHOSPHORUS, TOTAL (AS P)",0.0069,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-VENE-0.4","Veness Brook","5/1/2018, 9:45 AM","PHOSPHORUS, TOTAL (AS P)",0.013,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-OWLI-3.0","Owasco Lake Inlet","4/26/2018, 11:30 AM","PHOSPHORUS, TOTAL (AS P)",0.0106,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-DUCH-0.3","Dutch Hollow Brook","4/26/2018, 10:15 AM","PHOSPHORUS, TOTAL (AS P)",0.0117,"Owasco","east lake rd.",42.864,-76.508
+"07-SCKR-0.1","Sucker Brook","4/26/2018, 9:30 AM","PHOSPHORUS, TOTAL (AS P)",0.0173,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-VENE-0.4","Veness Brook","4/26/2018, 8:45 AM","PHOSPHORUS, TOTAL (AS P)",0.0213,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-OWLI-3.0","Owasco Lake Inlet","4/18/2018, 12:30 PM","PHOSPHORUS, TOTAL (AS P)",0.014,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-DUCH-0.3","Dutch Hollow Brook","4/18/2018, 11:35 AM","PHOSPHORUS, TOTAL (AS P)",0.0126,"Owasco","east lake rd.",42.864,-76.508
+"07-SCKR-0.1","Sucker Brook","4/18/2018, 10:30 AM","PHOSPHORUS, TOTAL (AS P)",0.0263,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-VENE-0.4","Veness Brook","4/18/2018, 9:40 AM","PHOSPHORUS, TOTAL (AS P)",0.0371,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-VENE-0.4","Veness Brook","4/18/2018, 9:40 AM","PHOSPHORUS, TOTAL (AS P)",0.0333,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-VENE-0.4","Veness Brook","4/3/2018, 12:00 PM","PHOSPHORUS, TOTAL (AS P)",0.0221,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-SCKR-0.1","Sucker Brook","4/3/2018, 11:30 AM","PHOSPHORUS, TOTAL (AS P)",0.0139,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-DUCH-0.3","Dutch Hollow Brook","4/3/2018, 10:00 AM","PHOSPHORUS, TOTAL (AS P)",0.0112,"Owasco","east lake rd.",42.864,-76.508
+"07-OWLI-3.0","Owasco Lake Inlet","4/3/2018, 9:00 AM","PHOSPHORUS, TOTAL (AS P)",0.0169,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","3/20/2018, 1:30 PM","PHOSPHORUS, TOTAL (AS P)",0.0104,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-DUCH-0.3","Dutch Hollow Brook","3/20/2018, 11:50 AM","PHOSPHORUS, TOTAL (AS P)",0.0088,"Owasco","east lake rd.",42.864,-76.508
+"07-SCKR-0.1","Sucker Brook","3/20/2018, 10:40 AM","PHOSPHORUS, TOTAL (AS P)",0.0085,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-VENE-0.4","Veness Brook","3/20/2018, 9:30 AM","PHOSPHORUS, TOTAL (AS P)",0.0165,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-OWLI-3.0","Owasco Lake Inlet","3/12/2018, 1:00 PM","PHOSPHORUS, TOTAL (AS P)",0.0058,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","3/12/2018, 1:00 PM","PHOSPHORUS, TOTAL (AS P)",0.0063,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-DUCH-0.3","Dutch Hollow Brook","3/12/2018, 12:00 PM","PHOSPHORUS, TOTAL (AS P)",0.0047,"Owasco","east lake rd.",42.864,-76.508
+"07-SCKR-0.1","Sucker Brook","3/12/2018, 11:00 AM","PHOSPHORUS, TOTAL (AS P)",0.0084,"Owasco","100 m upstream of sr 38a.",42.902,-76.527
+"07-VENE-0.4","Veness Brook","3/12/2018, 9:45 AM","PHOSPHORUS, TOTAL (AS P)",0.0088,"Fleming","Veness Brook at Oltz Residence",42.886,-76.548
+"07-DUCH-0.2","Dutch Hollow Brook","10/23/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.0144,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","10/3/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.0187,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","9/10/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.0555,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","8/13/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.014,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","7/12/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.0156,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","6/28/2012, 11:00 AM","PHOSPHORUS, TOTAL",0.0124,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","6/5/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.0128,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","5/15/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.0114,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","4/30/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.0071,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-DUCH-0.2","Dutch Hollow Brook","4/4/2012, 12:00 PM","PHOSPHORUS, TOTAL",0.0054,"Owasco","at east lake rd. bridge.",42.864159,-76.508049
+"07-OWLI-3.0","Owasco Lake Inlet","11/13/2007, 7:30 AM","PHOSPHORUS, TOTAL",0.0191,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","10/24/2007, 9:00 AM","PHOSPHORUS, TOTAL",0.164,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","10/3/2007, 9:00 AM","PHOSPHORUS, TOTAL",0.0364,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","9/12/2007, 9:00 AM","PHOSPHORUS, TOTAL",0.0743,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","8/22/2007, 9:00 AM","PHOSPHORUS, TOTAL",0.0487,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","7/18/2007, 9:00 AM","PHOSPHORUS, TOTAL",0.0379,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","6/18/2007, 10:00 AM","PHOSPHORUS, TOTAL",0.053,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","5/31/2007, 9:00 AM","PHOSPHORUS, TOTAL",0.0613,"Moravia","20 m below sr 38.",42.71667,-76.43773
+"07-OWLI-3.0","Owasco Lake Inlet","5/3/2007, 10:00 AM","PHOSPHORUS, TOTAL",0.0198,"Moravia","20 m below sr 38.",42.71667,-76.43773

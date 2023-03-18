@@ -52,7 +52,9 @@ df<-read.csv("Final_Advanced_MP_External_102221.csv")
 
 # check to see if Owasco Inlet site is in here
 
-temp<-filter(df, CHS_EVENT_SMAS_HISTORY_ID == '07-OWLI-0.1')
+temp<-filter(df, CHS_EVENT_SMAS_HISTORY_ID == '07-OWLI-0.3')
+
+# there are no samples at the Moravia Owasco Inlet site!!
 
 # there are 'O' instead of zeros in some of the site names. need to replace them
 # approach: extract the first two characters from the string and replace 'O' with '0'
@@ -97,7 +99,7 @@ Ow_reduced$CHS_EVENT_SMAS_SAMPLE_DATE<-as.Date(Ow_reduced$CHS_EVENT_SMAS_SAMPLE_
 
 # sum(Ow_reduced$CHEM_PARAMETER_UNIT != 'mg/L') # good
 
-####################### Dana Hall Data #######################
+####################### Dana Hall Data of 2018, 2021, 2022 #######################
 
 # set wd
 
@@ -161,7 +163,7 @@ OW_DOW<-read.csv("C:/PhD/Owasco/Owasco/Owasco_WQ_data/DOW/DOW_Owasco_P_data.csv"
 
 OW_DOW<-OW_DOW%>%mutate(sample_date = as.Date(as.POSIXlt(sample_date, format="%m/%d/%Y, %I:%M %p", tz = 'UTC')))
 
-####################### Plot DEC and Dana Hall Data #######################
+####################### Plot DEC, DOW, and Dana Hall Data #######################
 
 # plot Dana hall data and DEC data to see which sites have the most data
 
@@ -169,9 +171,14 @@ OW_DOW<-OW_DOW%>%mutate(sample_date = as.Date(as.POSIXlt(sample_date, format="%m
 
 site_names_1<-site_names%>%mutate(DataBase = 'DEC', description = paste(Stream,Description))%>%select(DataBase, Location.ID, description, Latitude, Longitude)
 
+# format site names from DOW section
+
+site_names_2<-OW_DOW%>%select(c(1,7,8,9))%>%mutate(DataBase = 'DOW', .before = 1)%>%filter(!duplicated(site_id))
+names(site_names_2)<-names(site_names_1)
+
 # format DHD site dataframe and rbind with DEC info
 
-all_sites<-DHD_sites%>%mutate(DataBase = 'Dana_Hall', description = Site.Name)%>%rename(Latitude = Lat, Longitude = Long, Location.ID = OWLA.Site.Number)%>%select(DataBase, Location.ID, description, Latitude, Longitude)%>%bind_rows(.,site_names_1)
+all_sites<-DHD_sites%>%mutate(DataBase = 'Dana_Hall', description = Site.Name)%>%rename(Latitude = Lat, Longitude = Long, Location.ID = OWLA.Site.Number)%>%select(DataBase, Location.ID, description, Latitude, Longitude)%>%bind_rows(.,site_names_1, site_names_2)
 
 # make a map
 
@@ -180,7 +187,13 @@ all_sites%>%
   st_as_sf(.,coords=c('Longitude','Latitude'), crs = 4326)%>%
   mapview(., zcol = 'DataBase', na.color = NA)
 
+# fourth color is overlap between DEC and DOW. confirmed by ooking at dataframe of lat long. Loogs good.
+
 ####################### Adding to Sucker Brook, TP #######################
+
+################### Dana Hall, 2018 #######################
+
+sb4<-DHD_2018%>%filter(Client.ID == 101)%>%rename(Date_drop = Date)%>%mutate(Date = as.Date(Date_drop, format = '%m/%d/%Y'), Remarks = NA, Value = TP/1000)%>%select(tail(names(.), 3))
 
 ################### Dana Hall, 2015 #######################
 
@@ -213,6 +226,9 @@ sb2<-data.frame(Date = date, Value = value)
 
 sb2<-sb2%>%mutate(Remarks = NA, .after = 1)
 
+################### DOW, All (2018 and 2019) #######################
+
+sb3<-OW_DOW%>%filter(grepl('Sucker', waterbody_name))%>%mutate(Date = sample_date, Remarks = NA,  Value = result_value)%>%select(tail(names(.), 3))
 
 ####################### Adding to Dutch Hollow, TP #######################
 
@@ -251,6 +267,30 @@ dh2<-DHD_2018%>%filter(Station_Name == 'Dutch Hollow')%>%select(3,8)%>%mutate(Da
 # 
 # dh1<-dh1%>%filter(Parameter == 'Phosphorus (total,mg/l)')%>%select(5,7)%>%rename(Date = SAMPLE_DATE, Value = Result.Value)%>%mutate(Remarks = NA, .after = 1)%>%mutate(Date = as.Date(Date, format = '%m/%d/%Y'))
 
+####################### Exporting the WQ Data: Owasco Inlet, Moravia, TP #######################
+
+# First paired DEC/DOW and Dana Hall site is 07-OWLI-3.0 and OWLA-213
+# Notes:
+# there is no DEC data for this site
+# there is no DHD 2018 data for this site
+# going to call this single WQ site Owasco Inlet, Moravia, or OIM
+# and first going to start with TP
+# NEED TO CONVERT DANA HALL DATA FROM ug/L TO mg/L!!!!!!!
+# EGRET Sample dataframe format for external WQ data: Date, Remarks, value
+
+DOW<-OW_DOW%>%filter(site_id == '07-OWLI-3.0')%>%mutate(Date = sample_date, Remarks = NA, Value = result_value)%>%select(tail(names(.), 3))
+
+DHD<-DHD_all[,c(1:4)]%>%filter(Client.ID_ == "OWLA 213")%>%filter(Station_Name != 'Long Point')%>%mutate(Value = as.numeric(`TP_(µgP/L)`)*0.001, Remarks = NA, Date = as.Date(Sampling_Date, format = '%m/%d/%Y'))%>%select(c(7,6,5))
+
+# bind them together
+
+OIM_TP<-bind_rows(DHD, DOW)%>%arrange(Date)%>%filter(!duplicated(Date))
+
+# write out to csv
+
+# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes")
+# write.csv(OIM_TP, "OIM_TP.csv", row.names = F)
+
 ####################### Exporting the WQ Data: Sucker Brook, TP #######################
 
 # First paired DEC and Dana Hall site is 07-SCKR-0.1 and OWLA-101
@@ -265,12 +305,12 @@ DHD<-DHD_all[,c(1:4)]%>%filter(Client.ID_ == "OWLA 101")%>%filter(Station_Name !
 
 # bind them together
 
-SB_TP<-bind_rows(sb2,sb1,DEC,DHD)
+SB_TP<-bind_rows(sb2,sb1,sb3,sb4,DEC,DHD)%>%arrange(Date)%>%filter(!duplicated(Date))
 
 # write out to csv
 
-# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs")
-# write.csv(SB_TP, "SB_TP.csv", row.names = F)
+setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes")
+write.csv(SB_TP, "SB_TP.csv", row.names = F)
 
 ####################### Exporting the WQ Data: Dutch Hollow, TP #######################
 
@@ -290,9 +330,10 @@ DH_TP<-bind_rows(dh1,dh2,DEC,DHD)%>%arrange(Date)%>%filter(!duplicated(Date))
 
 # write out to csv
 
-setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes")
-write.csv(DH_TP, "DH_TP.csv", row.names = F)
+# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes")
+# write.csv(DH_TP, "DH_TP.csv", row.names = F)
 
+# map Tony, Dana Hall, and DOW sites
 
 
 

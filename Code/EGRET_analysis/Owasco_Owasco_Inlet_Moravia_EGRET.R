@@ -5,12 +5,11 @@ gc()
 
 ####################### Goal of Code #######################
 
-# USGS Gauge at Owasoc inlet is scaled using drainage area method to Dutch Hollow
-# Dutch Hollow Water quality Data comes from DEC (2017,2018) and Dana Hall (2021, 2022)
-# DEC WQ data site # for Dutch Hollow: 07-DUCH-0.3
-# Dana Hall WQ data site number for Dutch Hollow: OWLA-166
+# USGS Gauge at Owasoc inlet is scaled using drainage area method to Sucker Brook
+# Sucker Brook Water quality Data comes from DEC (2017,2018), Dana Hall (2021, 2022), DOW ()
+# DEC/DOW WQ data site # for Sucker Brook: 07-DUCH-0.3
+# Dana Hall WQ data site number for Sucker Brook: OWLA-101
 # WQ data was combined into EGRET ready dataframe in another code and output saved to csv (for EGRET requirments)
-# Note that INFO uses interactive session
 
 ####################### Load packages #######################
 
@@ -61,7 +60,7 @@ Daily <- readNWISDaily(siteNumber, QParameterCd, StartDate, EndDate)
 
 # import just one consituent for now at Sample dataframe
 
-Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes", "DH_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
+Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes", "OIM_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
 
 ####################### Import metadata #######################
 
@@ -71,49 +70,57 @@ INFO$paramShortName = 'TP'
 
 ####################### Map flow and WQ sites #######################
 
-# flow site lat long is in INFO
+# these are the same site
 
-map_Q<-c('USGS_gauge_04235299', INFO$dec_lat_va[1], INFO$dec_long_va[1])
-
-# WQ lat long is in DEC report table, which I copied to a CSV
-
-map_WQ<-read.csv("C:/PhD/Owasco/Owasco/Owasco_WQ_data/DEC/Final_Advanced_MP_External_102221_site_names.csv")%>%filter(Location.ID == '07-DUCH-0.3')
-map_WQ<-map_WQ[,c(1,7,8)]
-
-# load watershed shapefiles
-
-setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Shapefiles/")
-USGS_DA<-st_read("USGS_gauge_04235299_DA_shapefile_SS/globalwatershed.shp")
-USGS_DA$Name[1]<-'USGS_04235299'
-WQ_DA<-st_read("OWLA-166_DA_shapefile_SS/globalwatershed.shp")
-WQ_DA$Name[1]<-'OWLA-166'
-
-# combine dataframes and plot
-
-rbind(map_WQ, map_Q)%>%
-  as.data.frame(row.names = 1:nrow(.))%>%
-  st_as_sf(.,coords=c('Longitude','Latitude'), crs = 4326)%>%
-  mapview(., zcol = 'Location.ID', na.color = NA)+mapview(USGS_DA)+mapview(WQ_DA)
+# # flow site lat long is in INFO
+# 
+# map_Q<-c('USGS_gauge_04235299', INFO$dec_lat_va[1], INFO$dec_long_va[1])
+# 
+# # WQ lat long is in DEC report table, which I copied to a CSV
+# 
+# map_WQ<-read.csv("C:/PhD/Owasco/Owasco/Owasco_WQ_data/DEC/Final_Advanced_MP_External_102221_site_names.csv")%>%filter(Location.ID == '07-SCKR-0.1')
+# map_WQ<-map_WQ[,c(1,7,8)]
+# 
+# # load watershed shapefiles
+# 
+# setwd("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Shapefiles/")
+# USGS_DA<-st_read("USGS_gauge_04235299_DA_shapefile_SS/globalwatershed.shp")
+# USGS_DA$Name[1]<-'USGS_04235299'
+# WQ_DA<-st_read("OWLA-101_DA_shapefile_SS/globalwatershed.shp")
+# WQ_DA$Name[1]<-'OWLA-101'
+# 
+# # combine dataframes and plot
+# 
+# rbind(map_WQ, map_Q)%>%
+#   as.data.frame(row.names = 1:nrow(.))%>%
+#   st_as_sf(.,coords=c('Longitude','Latitude'), crs = 4326)%>%
+#   mapview(., zcol = 'Location.ID', na.color = NA)+mapview(USGS_DA)+mapview(WQ_DA)
 
 ####################### Scale flow to WQ site #######################
 
-# drainage area of sucker brook at OWLA-166 is 29.3 sqmi (source:stream stats)
-# drainage area of USGS_gauge_04235299 is in INFO
-# come up with a scaling factor for flow:
+# these are the same site
 
-DA<-29.3
+# # drainage area of sucker brook at OWLA-101 is:
+# 
+# DA<-as.numeric(st_area(WQ_DA)*(1/(2.59*(10^6))))
+# 
+# # sqmi
+# 
+# # drainage area of USGS_gauge_04235299 is in INFO
+# 
+# # come up with a scaling factor for flow:
+# 
+# Q_sf<-DA/INFO$drain_area_va[1]
+# 
+# # scale Daily dataframe
 
-Q_sf<-DA/INFO$drain_area_va[1]
-
-# scale Daily dataframe
-
-Daily_scaled<-Daily%>%mutate(Q=Q*Q_sf, LogQ = log(Q*Q_sf), Q7 = Q7*Q_sf, Q30 = Q30*Q_sf)
+Daily_scaled<-Daily #%>%mutate(Q=Q*Q_sf, LogQ = log(Q*Q_sf), Q7 = Q7*Q_sf, Q30 = Q30*Q_sf)
 
 # change INFO
 
-INFO$station_nm<-"Dutch Hollow (Flow Scaled)"
-INFO$shortName<-"Dutch Hollow (Flow Scaled)"
-INFO$drain_area_va[1]<-DA
+INFO$station_nm<-"Owasco Inlet, Moravia"
+INFO$shortName<-"Owasco Inlet, Moravia"
+# INFO$drain_area_va[1]<-DA
 
 ####################### Moving Discharge Data from the Daily Data Frame to the Sample #######################
 
@@ -301,7 +308,7 @@ eList_WRTDS <- modelEstimation(eList)
 
 # does not run because default for minimum number of uncensored observations is 50
 
-eList_WRTDS <- modelEstimation(eList, minNumUncen = 30, minNumObs = 30)
+eList_WRTDS <- modelEstimation(eList, minNumUncen = 20, minNumObs = 20)
 
 # When the concentration record has a large data gap, the WRTDS estimates for the time of the data gap are likely to be highly unreliable. Because
 # WRTDS makes no prior assumptions about the shape of the time trend, the computations can create large oscillations during long data gaps. These 
@@ -369,13 +376,7 @@ resultsTable <- tableResults(eList_WRTDS)
 
 ################### Excluding 2012 Water Quality Data #######################
 
-# Sample_reduce<-Sample%>%filter(DecYear>2013)
-# 
-# eList_reduce<-mergeReport(INFO,Daily_scaled,Sample_reduce) # not sure why we use this still
-# 
-# eList_WRTDS_reduce <- modelEstimation(eList_reduce, minNumUncen = 30, minNumObs = 30)
-# 
-# resultsTable_reduce <- tableResults(eList_WRTDS_reduce)
+# dont need this section for Sucker Brook but is in Dutch Hollow (orginal code for EGRET analysis)
 
 ####################### Combining C-Q and WRTDS Results #######################
 

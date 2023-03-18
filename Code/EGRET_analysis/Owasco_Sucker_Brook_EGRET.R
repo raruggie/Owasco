@@ -6,11 +6,10 @@ gc()
 ####################### Goal of Code #######################
 
 # USGS Gauge at Owasoc inlet is scaled using drainage area method to Sucker Brook
-# Sucker Brook Water quality Data comes from DEC (2017,2018) and Dana Hall (2021, 2022)
-# DEC WQ data site # for sucker brook: 07-SCKR-0.1
-# Dana Hall WQ data site number for sucker brook: OWLA-101
+# Sucker Brook Water quality Data comes from DEC (2017,2018), Dana Hall (2021, 2022), DOW ()
+# DEC/DOW WQ data site # for Sucker Brook: 07-DUCH-0.3
+# Dana Hall WQ data site number for Sucker Brook: OWLA-101
 # WQ data was combined into EGRET ready dataframe in another code and output saved to csv (for EGRET requirments)
-# Note that INFO uses interactive session
 
 ####################### Load packages #######################
 
@@ -22,11 +21,6 @@ library(mapview)
 library(fuzzyjoin)
 library(maps)
 library(lfstat)
-
-####################### Functions #######################
-
-# setwd("C:/PhD/Research")
-# source('Ryan_Functions.R')
 
 ####################### A summary of EGRET #######################
 
@@ -66,7 +60,7 @@ Daily <- readNWISDaily(siteNumber, QParameterCd, StartDate, EndDate)
 
 # import just one consituent for now at Sample dataframe
 
-Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Dana_Hall", "SB_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
+Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes", "SB_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
 
 ####################### Import metadata #######################
 
@@ -102,11 +96,17 @@ rbind(map_WQ, map_Q)%>%
 
 ####################### Scale flow to WQ site #######################
 
-# drainage area of sucker brook at OWLA-101 is 9.85 sqmi (source:stream stats)
+# drainage area of sucker brook at OWLA-101 is:
+
+DA<-as.numeric(st_area(WQ_DA)*(1/(2.59*(10^6))))
+
+# sqmi
+
 # drainage area of USGS_gauge_04235299 is in INFO
+
 # come up with a scaling factor for flow:
 
-Q_sf<-9.85/INFO$drain_area_va[1]
+Q_sf<-DA/INFO$drain_area_va[1]
 
 # scale Daily dataframe
 
@@ -116,7 +116,7 @@ Daily_scaled<-Daily%>%mutate(Q=Q*Q_sf, LogQ = log(Q*Q_sf), Q7 = Q7*Q_sf, Q30 = Q
 
 INFO$station_nm<-"Sucker Brook (Flow Scaled)"
 INFO$shortName<-"Sucker Brook (Flow Scaled)"
-INFO$drain_area_va[1]<-9.85
+INFO$drain_area_va[1]<-DA
 
 ####################### Moving Discharge Data from the Daily Data Frame to the Sample #######################
 
@@ -211,7 +211,63 @@ plotFluxQ(eList, fluxUnit=4)
 
 multiPlotDataOverview(eList)
 
-####################### Summarizing Water-Quality Data with Using WRTDS #######################
+####################### Load Estimation from C-Q curve #######################
+
+# Get Sample data with Q
+
+samp1<-eList[[3]]
+
+C<-samp1$ConcLow
+Q<-samp1$Q
+
+################### Power Function Regression #######################
+
+# linear model in log space
+
+CQ<-lm(log(C)~log(Q))
+
+# plot model and assess viability
+
+plot(Q, C)
+
+plot(log(Q), log(C))
+
+abline(CQ)
+
+par(mfrow=c(2,2))
+plot(CQ)
+
+graphics.off()
+
+# Get cefficents and Bias correction factor for model
+
+CQ_sum<-summary(CQ)
+
+Beta_0<-CQ_sum$coef[1,1]
+
+Beta_1<-CQ_sum$coef[2,1]
+
+BCF<-exp((sigma(CQ)^2)/2)
+
+# Apply equation to a daily time series of concentration
+
+df<-Daily_scaled[,c(1,2,8,11)]
+
+df$ConcHAT<-BCF*exp(Beta_0+(Beta_1*df$LogQ))
+
+# use daily conc and flow to get daily load
+# flow units are m3/s, conc are mg/L
+# 86.4 converts mg * m3 / L * s to kg/day
+
+df$loadHAT<-df$Q*df$ConcHAT*86.4
+
+# Determine average annual loads, lbs/year
+
+AAL<-df%>%mutate(Year = as.numeric(format(Date, '%Y')))%>%group_by(Year)%>%summarise(CQ_Flux_lbs_yr = sum(loadHAT)*2.2)
+
+####################### Summarizing Water-Quality Data Using WRTDS #######################
+
+################### Using all Water Quality Data #######################
 
 # The method requires the availability of measured concentrations of the constituent of interest and a complete record of
 # daily mean discharge for some period of record. The method was designed for data sets with 200 or more measured concentration
@@ -268,8 +324,8 @@ eList_WRTDS <- modelEstimation(eList, minNumUncen = 30, minNumObs = 30)
 # given the gap between 2018 and 2021, I will use blanktime
 # note this removes entires from the dataframes reuslting from setupYears and calculateMonthlyResults function
 
-eList_WRTDS <- blankTime(eList_WRTDS, startBlank = '2019-01-01', endBlank = '2021-09-01')
-# eList <- blankTime(eList, startBlank = Daily$Date[1], endBlank = Sample$Date[1]-1)
+eList_WRTDS_bt <- blankTime(eList_WRTDS, startBlank = '2019-01-01', endBlank = '2021-09-01')
+eList_WRTDS_bt <- blankTime(eList_WRTDS, startBlank = Daily$Date[1], endBlank = Sample$Date[1]-1)
 
 # computing annual results using setupYears function
 
@@ -299,10 +355,8 @@ resultsTable <- tableResults(eList_WRTDS)
 # Computing and Displaying Tables of Change Over Time
 # provides measures of change, in both flow-normalized concentrations and flow-normalized flux, between pairs of years selected by the user
 
-yearPoints <- c(2017,2021)
-tableChange(eList_WRTDS, fluxUnit=6, yearPoints)
-
-# no result
+# yearPoints <- c(2017,2021)
+# tableChange(eList_WRTDS, fluxUnit=6, yearPoints)
 
 # In addition to comparing rates of change over various time periods, another comparison particularly worthy of note is of changes 
 # in flow-normalized concentration, in percent, to changes in flow-normalized flux, in percent, for the same time period. If the 
@@ -316,10 +370,23 @@ tableChange(eList_WRTDS, fluxUnit=6, yearPoints)
 # set of eight diagnostic graphics on a single page. This function is fluxBiasMulti and it is described in more detail below. The 
 # graphic it produces is designed to help the hydrologist quickly spot potential problems.
 
+################### Excluding 2012 Water Quality Data #######################
+
+# dont need this section for Sucker Brook but is in Dutch Hollow (orginal code for EGRET analysis)
+
+####################### Combining C-Q and WRTDS Results #######################
+
+df1<-resultsTable[,c(1,5,6)]%>%mutate(across(c(2:3), ~ . * ((10^6)*2.2)))%>%rename(WRTDS_Flux_lbs_yr = 2, WRDTS_FN_Flux_lbs_yr = 3)%>%
+  left_join(.,AAL[-c(1,15),], by = 'Year')%>%mutate(across(4, round, 1))
+
+# df2<-resultsTable_reduce[,c(1,5,6)]%>%mutate(across(c(2:3), ~ . * ((10^6)*2.2)))%>%rename(WRTDS_Flux_lbs_yr = 2, WRDTS_FN_Flux_lbs_yr = 3)%>%
+#   left_join(.,AAL[-c(1,15),], by = 'Year')%>%mutate(across(4, round, 1))
 
 
-
-
+setwd("C:/Users/ryrug/Downloads")
+pdf("data_output.pdf", height=11, width=8.5)
+gridExtra::grid.table(df1)
+dev.off()
 
 
 

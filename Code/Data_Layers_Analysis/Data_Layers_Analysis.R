@@ -296,7 +296,15 @@ plot(SSURGO.DH$spatial$geom,
      add = TRUE
 )
 
+# save Rdata file
 
+setwd("C:/PhD/Owasco/Owasco/Code/Data_Layers_Analysis")
+save(list = ls(.GlobalEnv), file = "Data_layers.Rdata")
+
+# load R data file
+
+setwd("C:/PhD/Owasco/Owasco/Code/Data_Layers_Analysis")
+load("Data_layers.Rdata")
 
 
 

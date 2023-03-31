@@ -16,6 +16,7 @@ library(lubridate)
 library(ggpmisc)
 library(ggpubr)
 library(expss)
+library(mblm)
 
 ####################### Read in Data and Clean up #######################
 
@@ -66,11 +67,19 @@ gg<- ggplot(data= df, aes(x= ln_Stage, y= ln_Q, color = Year)) +
 gg
 
 
+####################### Rating Curve Construction with Sens slope #######################
 
-####################### Rating Curve Construction #######################
+sen <- function(..., weights = NULL) {
+  mblm::mblm(...)
+}
 
-################### 2021 #######################
 
+gg<-ggplot(data= df, aes(x= ln_Stage, y= ln_Q, color = Year))+  
+  geom_point() +     
+  geom_smooth(method = sen, se = F)+
+  facet_wrap(~ Site, ncol= 3, scales = "free")
+
+gg
 
 
 

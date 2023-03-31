@@ -337,3 +337,64 @@ DH_TP<-bind_rows(dh1,dh2,DEC,DHD)%>%arrange(Date)%>%filter(!duplicated(Date))
 
 
 
+
+
+######## New Way ########
+
+# run the code above to get the dataframes but will rbind them into one dataframe 
+# since I dont need individual site dataframes
+
+#### DEC ####
+
+DEC<-Ow_reduced%>%filter(nchar(Stream)>1)%>%filter(grepl('total', CHEM_PARAMETER_NAME, ignore.case = T))%>%filter(grepl('phos', CHEM_PARAMETER_NAME, ignore.case = T))%>%mutate(Project = 'DEC', CHR_RESULT_VALUE = CHR_RESULT_VALUE*1000)%>%select(c(2,1,8,3,4))
+
+# site names imported above
+
+DEC_sites<-site_names%>%select(c(1,7,8))%>%rename(Lat = Latitude, Long = Longitude)%>%rename(ID = Location.ID)
+
+#### DOW ####
+
+DOW<-OW_DOW%>%mutate(Project = 'DOW', result_value = result_value*1000)%>%select(c(2,1,10,3,5))
+
+# use DOW sites to get lat longs
+
+DOW_sites<-OW_DOW%>%select(c(1,8,9))%>%distinct(site_id, latitude, longitude)%>%rename(Lat = latitude, Long = longitude, ID = site_id)
+
+#### Dana Hall ####
+
+DHD2018<-DHD_2018%>%mutate(Client.ID = paste('OWLA', Client.ID), Project = 'DHD')%>%select(c(2,1,25,3,8))
+
+DHD2021<-DHD_2021%>%mutate(Project = 'DHD')%>%select(c(2,1,11,3,4))
+
+DHD2022<-DHD_2022%>%mutate(Project = 'DHD')%>%select(c(2,1,11,3,4))
+
+# get lat longs for sites
+
+DHD_sites<-DHD_sites[c(3:7),]%>%select(1,3,4)%>%rename(ID = OWLA.Site.Number)%>%mutate(ID = str_replace(ID, "-", " "))
+
+DHD_sites_2<-DHD_2018%>%mutate(Client.ID = paste('OWLA', Client.ID))%>%select(c(1,4,5))%>%distinct(Client.ID,Lat,Long)%>%rename(ID = Client.ID)
+
+#### Put together ####
+
+dfs <- c('DHD2018','DHD2021','DHD2022','DEC','DOW')
+
+for(df in dfs) {
+  df.tmp <- get(df)
+  names(df.tmp) <- c("Site", "Site_ID", "Project",'Date','TP') 
+  assign(df, df.tmp)
+}
+
+Owasco_TP<-rbind(DHD2018,DHD2021,DHD2022,DEC,DOW)
+
+# add lat longs
+
+Owasco_site_key<-rbind(DHD_sites,DHD_sites_2, DEC_sites, DOW_sites)
+
+Owasco_TP<-left_join(Owasco_TP,Owasco_site_key,by = c("Site_ID" = "ID"))
+
+# write to csv
+
+write.csv(Owasco_TP, "C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes/Owasco_TP_ALL.csv", row.names = F)
+
+
+

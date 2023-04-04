@@ -26,6 +26,7 @@ library(elevatr)
 library(FedData)
 # library(EGRET)
 library(sf)
+library(sp)
 library(mapview)
 library(fuzzyjoin)
 library(maps)
@@ -33,6 +34,9 @@ library(maps)
 library(CropScapeR)
 library(raster)
 library(tidyverse)
+library(velox)
+library(rnaturalearth)
+library(rgeos)
 
 ####################### CDL: CropScapeR #######################
 
@@ -306,13 +310,58 @@ save(list = ls(.GlobalEnv), file = "Data_layers.Rdata")
 setwd("C:/PhD/Owasco/Owasco/Code/Data_Layers_Analysis")
 load("Data_layers.Rdata")
 
+#### Some shit ####
 
+state = ne_states(iso_a2 = "US", returnclass = "sf") %>%    # pull admin. bounds. for US
+  filter(iso_3166_2 == "US-MA") %>%                         # select Massachusetts
+  st_transform(crs = "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80
++towgs84=0,0,0,0,0,0,0 +units=m +no_defs") # nlcd crs
 
+pts = st_sample(state, size = 10, type = "regular")         # sample 10 points in polygon
 
+# Plot!
+plot(st_transform(pts, 4326), col="red", pch=20)
+maps::map("state", add=T)
 
+nlcd = get_nlcd(        # fn for pulling NLCD data
+  template = state,     # polygon template for download
+  label = "4pland",     # this is just a character string label
+  year = 2011,          # specify the year (2016 should be available soon)
+  force.redo = F
+) 
 
+# Plot!
+plot(nlcd)
+plot(pts, col="black", pch=20, cex=1.5, add=T)
 
+nlcd.vx = velox(stack(nlcd))                                  # raster for velox
+sp.buff = gBuffer(as(pts, 'Spatial'), width=1000, byid=TRUE)  # spatial buffer, radius in meters
+buff.df = SpatialPolygonsDataFrame(
+  sp.buff,                                         
+  data.frame(id=1:length(sp.buff)),                 # set ids
+  FALSE)                                            # df of buffers
+ex.mat.vx = nlcd.vx$extract(buff.df, df=T)                    # extract buffers from velox raster
+rm(nlcd.vx) # removing the velox raster can free up space
 
+prop.lc = ex.mat.vx %>%
+  setNames(c("ID", "lc_type")) %>%        # rename for ease
+  group_by(ID, lc_type) %>%               # group by point (ID) and lc class 
+  summarise(n = n()) %>%                  # count the number of occurences of each class
+  mutate(pland = n / sum(n)) %>%          # calculate percentage
+  ungroup() %>%                           # convert back to original form
+  dplyr::select(ID, lc_type, pland) %>%   # keep only these vars
+  complete(ID, nesting(lc_type), 
+           fill = list(pland = 0)) %>%             # fill in implicit landcover 0s
+  spread(lc_type, pland)   
 
+nlcd_cover_df = as.data.frame(nlcd@data@attributes[[1]]) %>%      # reference the name attributes
+  subset(NLCD.2011.Land.Cover.Class != "") %>%                    # only those that are named
+  dplyr::select(ID, NLCD.2011.Land.Cover.Class)                   # keep only the ID and the lc class name
+lc.col.nms = data.frame(ID = as.numeric(colnames(prop.lc[-1])))   # select landcover classes
+matcher = merge.data.frame(x = lc.col.nms,                        # analogous to VLOOKUP in Excel
+                           y = nlcd_cover_df,
+                           by.x = "ID",
+                           all.x = T)               
+colnames(prop.lc) = c("ID", as.character(matcher[,2]))
 
 

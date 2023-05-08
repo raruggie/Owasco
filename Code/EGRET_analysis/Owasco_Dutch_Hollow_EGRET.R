@@ -61,7 +61,7 @@ Daily <- readNWISDaily(siteNumber, QParameterCd, StartDate, EndDate)
 
 # import just one consituent for now at Sample dataframe
 
-Sample<-readUserSample("C:/PhD/Owasco/Owasco/Owasco_WQ_data/Tribs_final_dataframes", "DH_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
+Sample<-readUserSample("C:/PhD/Owasco/Owasco/Data/Owasco_WQ_data/Tribs_final_dataframes", "DH_TP.csv", hasHeader = TRUE, separator = ",",verbose = TRUE, interactive = NULL)
 
 ####################### Import metadata #######################
 
